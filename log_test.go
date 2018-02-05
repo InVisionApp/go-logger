@@ -129,24 +129,6 @@ var _ = Describe("simple logger", func() {
 					ContainSubstring("foo=bar"),
 					ContainSubstring("baz=2"),
 				))
-
-				//logrus.SetLevel(logrus.DebugLevel)
-				//
-				//l = logrusshim.NewLogrus(nil)
-				//
-				//l.Debug("hi there ", "you")
-				//
-				//l.Debugf("hi there %s", "you")
-				//
-				//l.WithFields(map[string]interface{}{
-				//	"foo": "bar",
-				//	"baz": 2,
-				//}).Debug("hi there ", "you")
-				//
-				//l.WithFields(map[string]interface{}{
-				//	"biz": "bar",
-				//	"buz": 2,
-				//}).Debugf("hi there %s", "you")
 			})
 		})
 	})

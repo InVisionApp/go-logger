@@ -67,14 +67,20 @@ var _ = Describe("logrus logger", func() {
 			l.Debug("hi there ", "you")
 
 			b := newOut.Bytes()
-			Expect(string(b)).To(ContainSubstring("[DEBUG] hi there you"))
+			Expect(string(b)).To(SatisfyAll(
+				ContainSubstring("hi there you"),
+				ContainSubstring("level=debug"),
+			))
 		})
 
 		It("formatting", func() {
 			l.Debugf("hi there %s", "you")
 
 			b := newOut.Bytes()
-			Expect(string(b)).To(ContainSubstring("[DEBUG] hi there you"))
+			Expect(string(b)).To(SatisfyAll(
+				ContainSubstring("hi there you"),
+				ContainSubstring("level=debug"),
+			))
 		})
 
 		Context("with fields", func() {
@@ -91,7 +97,7 @@ var _ = Describe("logrus logger", func() {
 
 				b := newOut.Bytes()
 				Expect(string(b)).To(SatisfyAll(
-					ContainSubstring("[DEBUG] hi there"),
+					ContainSubstring("hi there"),
 					ContainSubstring("foo=newval"),
 					ContainSubstring("baz=origval"),
 					ContainSubstring("biz=buzz"),
@@ -107,7 +113,7 @@ var _ = Describe("logrus logger", func() {
 
 				b := newOut.Bytes()
 				Expect(string(b)).To(SatisfyAll(
-					ContainSubstring("[DEBUG] hi there you"),
+					ContainSubstring("hi there you"),
 					ContainSubstring("foo=bar"),
 					ContainSubstring("baz=2"),
 				))
@@ -123,7 +129,7 @@ var _ = Describe("logrus logger", func() {
 
 				bb := newOut.Bytes()
 				Expect(string(bb)).To(SatisfyAll(
-					ContainSubstring("[DEBUG] hi there you"),
+					ContainSubstring("hi there you"),
 					ContainSubstring("biz=bar"),
 					ContainSubstring("buz=2"),
 				))
@@ -131,24 +137,6 @@ var _ = Describe("logrus logger", func() {
 					ContainSubstring("foo=bar"),
 					ContainSubstring("baz=2"),
 				))
-
-				//logrus.SetLevel(logrus.DebugLevel)
-				//
-				//l = logrusshim.NewLogrus(nil)
-				//
-				//l.Debug("hi there ", "you")
-				//
-				//l.Debugf("hi there %s", "you")
-				//
-				//l.WithFields(map[string]interface{}{
-				//	"foo": "bar",
-				//	"baz": 2,
-				//}).Debug("hi there ", "you")
-				//
-				//l.WithFields(map[string]interface{}{
-				//	"biz": "bar",
-				//	"buz": 2,
-				//}).Debugf("hi there %s", "you")
 			})
 		})
 	})
