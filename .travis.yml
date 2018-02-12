@@ -1,2 +1,8 @@
 language: go
 
+before_install:
+  - go get -t -v ./...
+
+script:
+  - make test/codecov
+
