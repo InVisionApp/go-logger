@@ -25,8 +25,10 @@ type Logger interface {
 	Warnf(format string, args ...interface{})
 	Errorf(format string, args ...interface{})
 
-	WithFields(fields map[string]interface{}) Logger
+	WithFields(Fields) Logger
 }
+
+type Fields map[string]interface{}
 
 /**************
  Simple Logger
@@ -43,7 +45,7 @@ func NewSimple() Logger {
 
 // WithFields will return a new logger based on the original logger
 // with the additional supplied fields
-func (b *simple) WithFields(fields map[string]interface{}) Logger {
+func (b *simple) WithFields(fields Fields) Logger {
 	cp := &simple{}
 
 	if b.fields == nil {
@@ -153,4 +155,4 @@ func (n *noop) Warnf(format string, args ...interface{}) {}
 func (n *noop) Errorf(format string, args ...interface{}) {}
 
 // WithFields no-op
-func (n *noop) WithFields(fields map[string]interface{}) Logger { return n }
+func (n *noop) WithFields(fields Fields) Logger { return n }

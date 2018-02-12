@@ -62,8 +62,9 @@ func (s *shim) Errorf(format string, args ...interface{}) {
 
 // WithFields will return a new logger based on the original logger with
 // the additional supplied fields. Wrapper for logrus Entry.WithFields()
-func (s *shim) WithFields(fields map[string]interface{}) log.Logger {
-	cp := &shim{}
-	cp.l = s.l.WithFields(logrus.Fields(fields))
+func (s *shim) WithFields(fields log.Fields) log.Logger {
+	cp := &shim{
+		l: s.l.WithFields(logrus.Fields(fields)),
+	}
 	return cp
 }
