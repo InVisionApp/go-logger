@@ -8,7 +8,7 @@ import (
 
 var _ = Describe("logrus logger", func() {
 	var (
-		testOut *testLog
+		testOut *TestLogger
 		l       log.Logger
 	)
 
