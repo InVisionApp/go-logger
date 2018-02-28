@@ -9,6 +9,7 @@ import (
 
 type TestLogger struct {
 	buf    *bytes.Buffer
+	count  *counter
 	fields map[string]interface{}
 }
 
@@ -16,7 +17,8 @@ func NewTestLog() *TestLogger {
 	b := &bytes.Buffer{}
 
 	return &TestLogger{
-		buf: b,
+		buf:   b,
+		count: NewCounter(),
 	}
 }
 
@@ -25,56 +27,67 @@ func (t *TestLogger) Bytes() []byte {
 	return t.buf.Bytes()
 }
 
+func (t *TestLogger) CallCount() int {
+	return t.count.val()
+}
+
 // Reset the log buffer
 func (t *TestLogger) Reset() {
 	t.buf.Reset()
+	t.count.reset()
+}
+
+func (t *TestLogger) write(level, msg string) {
+	t.buf.WriteString(fmt.Sprintf("[%s] %s %s", level, msg, pretty(t.fields)+"\n"))
+	t.count.inc()
 }
 
 // Debug log message
 func (t *TestLogger) Debug(msg ...interface{}) {
-	t.buf.WriteString(fmt.Sprintf("[DEBUG] %s %s", fmt.Sprint(msg...), pretty(t.fields)+"\n"))
+	t.write("DEBUG", fmt.Sprint(msg...))
 }
 
 // Info log message
 func (t *TestLogger) Info(msg ...interface{}) {
-	t.buf.WriteString(fmt.Sprintf("[INFO] %s %s", fmt.Sprint(msg...), pretty(t.fields)+"\n"))
+	t.write("INFO", fmt.Sprint(msg...))
 }
 
 // Warn log message
 func (t *TestLogger) Warn(msg ...interface{}) {
-	t.buf.WriteString(fmt.Sprintf("[WARN] %s %s", fmt.Sprint(msg...), pretty(t.fields)+"\n"))
+	t.write("WARN", fmt.Sprint(msg...))
 }
 
 // Error log message
 func (t *TestLogger) Error(msg ...interface{}) {
-	t.buf.WriteString(fmt.Sprintf("[ERROR] %s %s", fmt.Sprint(msg...), pretty(t.fields)+"\n"))
+	t.write("ERROR", fmt.Sprint(msg...))
 }
 
 // Debugf log message with formatting
 func (t *TestLogger) Debugf(format string, args ...interface{}) {
-	t.buf.WriteString(fmt.Sprintf("[DEBUG] "+format, args...) + " " + pretty(t.fields) + "\n")
+	t.write("DEBUG", fmt.Sprintf(format, args...))
 }
 
 // Infof log message with formatting
 func (t *TestLogger) Infof(format string, args ...interface{}) {
-	t.buf.WriteString(fmt.Sprintf("[INFO] "+format, args...) + " " + pretty(t.fields) + "\n")
+	t.write("INFO", fmt.Sprintf(format, args...))
 }
 
 // Warnf log message with formatting
 func (t *TestLogger) Warnf(format string, args ...interface{}) {
-	t.buf.WriteString(fmt.Sprintf("[WARN] "+format, args...) + " " + pretty(t.fields) + "\n")
+	t.write("WARN", fmt.Sprintf(format, args...))
 }
 
 // Errorf log message with formatting
 func (t *TestLogger) Errorf(format string, args ...interface{}) {
-	t.buf.WriteString(fmt.Sprintf("[ERROR] "+format, args...) + " " + pretty(t.fields) + "\n")
+	t.write("ERROR", fmt.Sprintf(format, args...))
 }
 
 // WithFields will return a new logger based on the original logger
 // with the additional supplied fields
 func (t *TestLogger) WithFields(fields log.Fields) log.Logger {
 	cp := &TestLogger{
-		buf: t.buf,
+		buf:   t.buf,
+		count: t.count,
 	}
 
 	if t.fields == nil {
