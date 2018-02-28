@@ -5,7 +5,7 @@ import (
 	stdlog "log"
 )
 
-//go:generate counterfeiter -o ../fakes/fake_logger.go . Logger
+//go:generate counterfeiter -o shims/fake/fake_logger.go . Logger
 
 // Logger interface allows you to maintain a unified interface while using a
 // custom logger. This allows you to write log statements without dictating
