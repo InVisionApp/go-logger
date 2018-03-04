@@ -9,6 +9,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var _ = Describe("meets the interface", func() {
+	var _ log.Logger = &shim{}
+})
+
 var _ = Describe("logrus logger", func() {
 	var (
 		newOut *bytes.Buffer

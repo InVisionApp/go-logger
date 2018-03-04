@@ -6,6 +6,10 @@ import (
 	. "github.com/onsi/gomega"
 )
 
+var _ = Describe("meets the interface", func() {
+	var _ log.Logger = &TestLogger{}
+})
+
 var _ = Describe("logrus logger", func() {
 	var (
 		testOut *TestLogger

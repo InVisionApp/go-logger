@@ -9,6 +9,10 @@ import (
 )
 
 var _ = Describe("simple logger", func() {
+	Describe("meets the interface", func() {
+		var _ Logger = &simple{}
+	})
+
 	var (
 		newOut *bytes.Buffer
 		l      Logger
@@ -135,6 +139,10 @@ var _ = Describe("simple logger", func() {
 })
 
 var _ = Describe("noop logger", func() {
+	Describe("meets the interface", func() {
+		var _ Logger = &noop{}
+	})
+
 	var (
 		l Logger
 	)
