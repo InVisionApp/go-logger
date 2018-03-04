@@ -12,7 +12,7 @@ type counter struct {
 }
 
 //New counter stating at 0
-func NewCounter() *counter {
+func newCounter() *counter {
 	return &counter{num: 0, mu: &sync.Mutex{}}
 }
 

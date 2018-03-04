@@ -18,7 +18,7 @@ func NewTestLog() *TestLogger {
 
 	return &TestLogger{
 		buf:   b,
-		count: NewCounter(),
+		count: newCounter(),
 	}
 }
 
@@ -27,11 +27,12 @@ func (t *TestLogger) Bytes() []byte {
 	return t.buf.Bytes()
 }
 
+// CallCount returns the number of times this logger was called
 func (t *TestLogger) CallCount() int {
 	return t.count.val()
 }
 
-// Reset the log buffer
+// Reset the log buffer and call count
 func (t *TestLogger) Reset() {
 	t.buf.Reset()
 	t.count.reset()
