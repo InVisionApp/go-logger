@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.com/InVisionApp/go-logger.svg?token=KosA43m1X3ikri8JEukQ&branch=master)](https://travis-ci.com/InVisionApp/go-logger)
 
+<img align="right" src="images/go-logger.svg" width="200">
+
 # go-logger
 This package provides a standard interface for logging in any go application.  
 Logger interface allows you to maintain a unified interface while using a custom logger. This allows you to write log statements without dictating the specific underlying library used for logging. You can avoid vendoring of logging libraries, which is especially useful when writing shared code such as a library.  
