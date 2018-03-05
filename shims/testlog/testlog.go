@@ -7,12 +7,18 @@ import (
 	"github.com/InVisionApp/go-logger"
 )
 
+// TestLogger is used to capture logs during the execution of a test.
+// It writes the logs to a byte buffer which can be dumped and
+// inspected. It also tracks a call count of the total number of
+// times the logger has been called. Note that this logger is not
+// meant to be used in production. It is meant only for tests.
 type TestLogger struct {
 	buf    *bytes.Buffer
 	count  *counter
 	fields map[string]interface{}
 }
 
+// NewTestLog generates a new TestLogger
 func NewTestLog() *TestLogger {
 	b := &bytes.Buffer{}
 

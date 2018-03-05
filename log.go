@@ -28,6 +28,7 @@ type Logger interface {
 	WithFields(Fields) Logger
 }
 
+// Fields is used to define structured fields which are appended to log messages
 type Fields map[string]interface{}
 
 /**************
@@ -125,7 +126,8 @@ func pretty(m map[string]interface{}) string {
 
 type noop struct{}
 
-// NewNoop creates a no-op logger that can be used to silence all logging from this library.
+// NewNoop creates a no-op logger that can be used to silence
+// all logging from this library. Also useful in tests.
 func NewNoop() Logger {
 	return &noop{}
 }
