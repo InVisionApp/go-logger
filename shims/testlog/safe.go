@@ -19,13 +19,13 @@ func newCounter() *counter {
 func (c *counter) inc() {
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	c.num += 1
+	c.num++
 }
 
 func (c *counter) dec() {
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	c.num -= 1
+	c.num--
 }
 
 func (c *counter) reset() {
