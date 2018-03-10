@@ -1,4 +1,10 @@
+[![LICENSE](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 [![Build Status](https://travis-ci.com/InVisionApp/go-logger.svg?token=KosA43m1X3ikri8JEukQ&branch=master)](https://travis-ci.com/InVisionApp/go-logger)
+[![codecov](https://codecov.io/gh/InVisionApp/go-logger/branch/master/graph/badge.svg?token=hhqA1l88kx)](https://codecov.io/gh/InVisionApp/go-logger)
+[![Go Report Card](https://goreportcard.com/badge/github.com/InVisionApp/go-logger)](https://goreportcard.com/report/github.com/InVisionApp/go-logger)
+[![Godocs](https://img.shields.io/badge/golang-documentation-blue.svg)](https://godoc.org/github.com/InVisionApp/go-logger)
+
+
 
 <img align="right" src="images/go-logger.svg" width="200">
 
@@ -62,3 +68,9 @@ The test logger is for capturing logs during the execution of a test. It writes 
 
 ### Fake Logger
 A generated fake that meets the logger interface. This is useful if you want to stub out your own functionality for the logger in tests. This logger is meant for use in tests and not in production. If you simply want to silence logs, use the no-op logger.
+
+---
+
+#### \[Credit\]
+The go-logger gopher image by [talpert](https://github.com/talpert)  
+Original artwork designed by Renée French
