@@ -10,7 +10,7 @@ var _ = Describe("meets the interface", func() {
 	var _ log.Logger = &TestLogger{}
 })
 
-var _ = Describe("logrus logger", func() {
+var _ = Describe("test logger", func() {
 	var (
 		testOut *TestLogger
 		l       log.Logger
@@ -80,6 +80,37 @@ var _ = Describe("logrus logger", func() {
 				ContainSubstring("hi there you"),
 				ContainSubstring("DEBUG"),
 			))
+		})
+
+		Context("Bytes", func() {
+			It("returns the bytes in the buffer", func() {
+				testOut.buf.WriteString("foo")
+
+				b := testOut.Bytes()
+
+				Expect(string(b)).To(Equal("foo"))
+			})
+		})
+
+		Context("CallCount", func() {
+			It("returns the call count", func() {
+				l.Info("foo")
+				l.Info("foo")
+				l.Info("foo")
+
+				Expect(testOut.CallCount()).To(Equal(3))
+			})
+		})
+
+		Context("reset", func() {
+			It("resets the buffer and the call count", func() {
+				l.Info("foo")
+
+				testOut.Reset()
+
+				Expect(testOut.Bytes()).To(BeEmpty())
+				Expect(testOut.CallCount()).To(Equal(0))
+			})
 		})
 
 		Context("with fields", func() {

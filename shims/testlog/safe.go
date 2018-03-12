@@ -22,12 +22,6 @@ func (c *counter) inc() {
 	c.num++
 }
 
-func (c *counter) dec() {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-	c.num--
-}
-
 func (c *counter) reset() {
 	c.mu.Lock()
 	defer c.mu.Unlock()
