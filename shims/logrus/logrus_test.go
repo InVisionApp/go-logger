@@ -23,7 +23,7 @@ var _ = Describe("logrus logger", func() {
 		newOut = &bytes.Buffer{}
 		logrus.SetOutput(newOut)
 		logrus.SetLevel(logrus.DebugLevel)
-		l = NewLogrus(nil)
+		l = New(nil)
 	})
 
 	Context("happy path", func() {

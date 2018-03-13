@@ -19,7 +19,7 @@ type TestLogger struct {
 }
 
 // NewTestLog generates a new TestLogger
-func NewTestLog() *TestLogger {
+func New() *TestLogger {
 	b := &bytes.Buffer{}
 
 	return &TestLogger{

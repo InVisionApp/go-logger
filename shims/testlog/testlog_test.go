@@ -17,7 +17,7 @@ var _ = Describe("test logger", func() {
 	)
 
 	BeforeEach(func() {
-		testOut = NewTestLog()
+		testOut = New()
 		l = testOut
 	})
 

@@ -18,7 +18,7 @@ func main() {
 	loggers := map[string]log.Logger{
 		"Simple": log.NewSimple(),
 		"No-op":  log.NewNoop(),
-		"Logrus": logrus.NewLogrus(nil),
+		"Logrus": logrus.New(nil),
 	}
 
 	// sleeps for print order
@@ -41,7 +41,7 @@ func main() {
 	************/
 
 	fmt.Println("__Test Logger__________")
-	tl := testlog.NewTestLog()
+	tl := testlog.New()
 	tl.Infof("this is a test %s", "log")
 	fmt.Print(string(tl.Bytes()))
 	fmt.Println("call count:", tl.CallCount())
