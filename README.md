@@ -66,7 +66,7 @@ import (
 
 myLogrus := lgrs.New()
 myLogrus.Out = &bytes.Buffer{} 
-logger := log.New(myLogrus)
+logger := logrus.New(myLogrus)
 logger.Debug("this is a debug message")
 ```
 
