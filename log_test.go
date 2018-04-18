@@ -45,6 +45,26 @@ var _ = Describe("simple logger", func() {
 			}
 		})
 
+		It("prints all log line levels", func() {
+			logFuncs := map[string]func(...interface{}){
+				"DEBUG": l.Debugln,
+				"INFO":  l.Infoln,
+				"WARN":  l.Warnln,
+				"ERROR": l.Errorln,
+			}
+
+			for level, logFunc := range logFuncs {
+				logFunc("hi", "there")
+
+				b := newOut.Bytes()
+				newOut.Reset()
+				Expect(string(b)).To(SatisfyAll(
+					ContainSubstring("hi there"),
+					ContainSubstring(level),
+				))
+			}
+		})
+
 		It("prints all log levels on formatted", func() {
 			logFuncs := map[string]func(string, ...interface{}){
 				"DEBUG": l.Debugf,

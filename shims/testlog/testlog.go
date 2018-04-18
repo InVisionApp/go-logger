@@ -49,6 +49,26 @@ func (t *TestLogger) write(level, msg string) {
 	t.count.inc()
 }
 
+//Debugln log line message
+func (t *TestLogger) Debugln(msg ...interface{}) {
+	t.write("DEBUG", fmt.Sprintln(msg...))
+}
+
+//Infoln log line message
+func (t *TestLogger) Infoln(msg ...interface{}) {
+	t.write("INFO", fmt.Sprintln(msg...))
+}
+
+//Warnln log line message
+func (t *TestLogger) Warnln(msg ...interface{}) {
+	t.write("WARN", fmt.Sprintln(msg...))
+}
+
+//Errorln log line message
+func (t *TestLogger) Errorln(msg ...interface{}) {
+	t.write("ERROR", fmt.Sprintln(msg...))
+}
+
 // Debug log message
 func (t *TestLogger) Debug(msg ...interface{}) {
 	t.write("DEBUG", fmt.Sprint(msg...))
