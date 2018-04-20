@@ -93,22 +93,26 @@ func (b *simple) Error(msg ...interface{}) {
 
 // Debugln log line message
 func (b *simple) Debugln(msg ...interface{}) {
-	stdlog.Println("[DEBUG]", fmt.Sprintln(msg...), pretty(b.fields))
+	a := fmt.Sprintln(msg...)
+	stdlog.Println("[DEBUG]", a[:len(a)-1], pretty(b.fields))
 }
 
 // Infoln log line message
 func (b *simple) Infoln(msg ...interface{}) {
-	stdlog.Println("[INFO]", fmt.Sprintln(msg...), pretty(b.fields))
+	a := fmt.Sprintln(msg...)
+	stdlog.Println("[INFO]", a[:len(a)-1], pretty(b.fields))
 }
 
 // Warnln log line message
 func (b *simple) Warnln(msg ...interface{}) {
-	stdlog.Println("[WARN]", fmt.Sprintln(msg...), pretty(b.fields))
+	a := fmt.Sprintln(msg...)
+	stdlog.Println("[WARN]", a[:len(a)-1], pretty(b.fields))
 }
 
 // Errorln log line message
 func (b *simple) Errorln(msg ...interface{}) {
-	stdlog.Println("[ERROR]", fmt.Sprintln(msg...), pretty(b.fields))
+	a := fmt.Sprintln(msg...)
+	stdlog.Println("[ERROR]", a[:len(a)-1], pretty(b.fields))
 }
 
 // Debugf log message with formatting
