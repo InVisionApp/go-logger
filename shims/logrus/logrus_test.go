@@ -47,6 +47,26 @@ var _ = Describe("logrus logger", func() {
 			}
 		})
 
+		It("prints all log levels", func() {
+			logFuncs := map[string]func(...interface{}){
+				"debug": l.Debugln,
+				"info":  l.Infoln,
+				"warn":  l.Warnln,
+				"error": l.Errorln,
+			}
+
+			for level, logFunc := range logFuncs {
+				logFunc("hi", "there")
+
+				b := newOut.Bytes()
+				newOut.Reset()
+				Expect(string(b)).To(SatisfyAll(
+					ContainSubstring("hi there"),
+					ContainSubstring("level="+level),
+				))
+			}
+		})
+
 		It("prints all log levels on formatted", func() {
 			logFuncs := map[string]func(string, ...interface{}){
 				"debug": l.Debugf,

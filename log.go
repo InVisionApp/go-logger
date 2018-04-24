@@ -20,6 +20,11 @@ type Logger interface {
 	Warn(msg ...interface{})
 	Error(msg ...interface{})
 
+	Debugln(msg ...interface{})
+	Infoln(msg ...interface{})
+	Warnln(msg ...interface{})
+	Errorln(msg ...interface{})
+
 	Debugf(format string, args ...interface{})
 	Infof(format string, args ...interface{})
 	Warnf(format string, args ...interface{})
@@ -86,6 +91,30 @@ func (b *simple) Error(msg ...interface{}) {
 	stdlog.Printf("[ERROR] %s %s", fmt.Sprint(msg...), pretty(b.fields))
 }
 
+// Debugln log line message
+func (b *simple) Debugln(msg ...interface{}) {
+	a := fmt.Sprintln(msg...)
+	stdlog.Println("[DEBUG]", a[:len(a)-1], pretty(b.fields))
+}
+
+// Infoln log line message
+func (b *simple) Infoln(msg ...interface{}) {
+	a := fmt.Sprintln(msg...)
+	stdlog.Println("[INFO]", a[:len(a)-1], pretty(b.fields))
+}
+
+// Warnln log line message
+func (b *simple) Warnln(msg ...interface{}) {
+	a := fmt.Sprintln(msg...)
+	stdlog.Println("[WARN]", a[:len(a)-1], pretty(b.fields))
+}
+
+// Errorln log line message
+func (b *simple) Errorln(msg ...interface{}) {
+	a := fmt.Sprintln(msg...)
+	stdlog.Println("[ERROR]", a[:len(a)-1], pretty(b.fields))
+}
+
 // Debugf log message with formatting
 func (b *simple) Debugf(format string, args ...interface{}) {
 	stdlog.Print(fmt.Sprintf("[DEBUG] "+format, args...), " ", pretty(b.fields))
@@ -143,6 +172,18 @@ func (n *noop) Warn(msg ...interface{}) {}
 
 // Error log message no-op
 func (n *noop) Error(msg ...interface{}) {}
+
+// Debugln line log message no-op
+func (n *noop) Debugln(msg ...interface{}) {}
+
+// Infoln line log message no-op
+func (n *noop) Infoln(msg ...interface{}) {}
+
+// Warnln line log message no-op
+func (n *noop) Warnln(msg ...interface{}) {}
+
+// Errorln line log message no-op
+func (n *noop) Errorln(msg ...interface{}) {}
 
 // Debugf log message with formatting no-op
 func (n *noop) Debugf(format string, args ...interface{}) {}
