@@ -75,6 +75,50 @@ output:
 time="2018-03-04T13:12:35-08:00" level=debug msg="this is a debug message"
 ```
 
+### Zerolog Logger
+This shim allows you to use [zerolog](https://github.com/rs/zerolog) as your logging implementation.  If you pass `nil` into `New(...)`, 
+you will get a default `zerolog.Logger` writing to `stdout` with a timestamp attached.
+
+Alternatively, you can pass your own instance of `zerolog.Logger` to `New(...)`.
+
+Using the `zerolog` default logger:
+```go
+import "github.com/InVisionApp/go-logger/shims/zerolog"
+
+func main() {
+	logger := zerolog.New(nil)
+    logger.Debug("this is a debug message!")
+}
+
+```
+
+Using your own logger:
+```go
+import (
+	"os"
+	
+	zl "github.com/rs/zerolog"
+	"github.com/InVisionApp/go-logger/shims/zerolog"
+)
+
+func main() {
+	// zerolog is a structured logger by default
+	structuredLogger := zl.New(os.Stdout).Logger()
+	sLogger := zerolog.New(structuredLogger)
+	sLogger.Debug("debug message")
+	// {"level":"debug", "message":"debug message"}
+	
+	// If you want to use zerolog for human-readable console logging, 
+	// you create a ConsoleWriter and use it as your io.Writer implementation
+	consoleLogger := zl.New(zl.ConsoleWriter{
+		Out: os.Stdout,
+	})
+	cLogger := zerolog.New(consoleLogger)
+	cLogger.Debug("debug message")
+	// |DEBUG| debug message
+}
+```
+
 ### Test Logger
 The test logger is for capturing logs during the execution of a test. It writes the logs to a byte buffer which can be dumped and inspected. It also tracks a call count of the total number of times the logger has been called.  
 **_Note:_** this logger is not meant to be used in production. It is purely designed for use in tests.
