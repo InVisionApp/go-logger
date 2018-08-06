@@ -163,7 +163,7 @@ var _ = Describe("zerolog logger", func() {
 			os.Stdout = old
 
 			out := <-outC
-			Expect(out).To(MatchRegexp(`{"level":"debug","time":"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}-\d{2}:\d{2}Z?","message":"i am default"}`))
+			Expect(out).To(MatchRegexp(`{"level":"debug","time":"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z?(-\d{2}:\d{2})?","message":"i am default"}`))
 		})
 	})
 	Context("fields", func() {
