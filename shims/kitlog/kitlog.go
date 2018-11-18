@@ -102,10 +102,14 @@ func (s *shim) Errorf(format string, args ...interface{}) {
 // kitlog logger, with the provided fields added to the log string,
 // as a key-value pair
 func (s *shim) WithFields(fields log.Fields) log.Logger {
-	var keyvals []interface{}
+	keyvals := make([]interface{}, len(fields)*2)
+	i := 0
 
 	for key, value := range fields {
-		keyvals = append(keyvals, key, value)
+		keyvals[i] = key
+		keyvals[i+1] = value
+
+		i += 2
 	}
 
 	return &shim{
