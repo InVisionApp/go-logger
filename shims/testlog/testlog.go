@@ -3,8 +3,9 @@ package testlog
 import (
 	"bytes"
 	"fmt"
+	"os"
 
-	"github.com/InVisionApp/go-logger"
+	log "github.com/InVisionApp/go-logger"
 )
 
 // TestLogger is used to capture logs during the execution of a test.
@@ -91,6 +92,12 @@ func (t *TestLogger) Warn(msg ...interface{}) {
 // Error log message
 func (t *TestLogger) Error(msg ...interface{}) {
 	t.write("ERROR", fmt.Sprint(msg...))
+}
+
+// Fatal log message (and exit)
+func (t *TestLogger) Fatal(msg ...interface{}) {
+	t.write("Fatal", fmt.Sprint(msg...))
+	os.Exit(1)
 }
 
 // Debugf log message with formatting

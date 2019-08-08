@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/InVisionApp/go-logger"
+	log "github.com/InVisionApp/go-logger"
 	kitlog "github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
 )
@@ -64,6 +64,13 @@ func (s *shim) Warn(msg ...interface{}) {
 
 func (s *shim) Error(msg ...interface{}) {
 	level.Error(s.logger).Log("msg", fmt.Sprint(spaceSep(msg)...))
+}
+
+func (s *shim) Fatal(msg ...interface{}) {
+	// Since kitlog does not support fatal, emulate it the best we can
+	msg = append([]interface{}{"[FATAL]"}, msg...)
+	level.Error(s.logger).Log("msg", fmt.Sprint(spaceSep(msg)...))
+	os.Exit(1)
 }
 
 func (s *shim) Debugln(msg ...interface{}) {

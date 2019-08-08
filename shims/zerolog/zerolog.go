@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/InVisionApp/go-logger"
+	log "github.com/InVisionApp/go-logger"
 	"github.com/rs/zerolog"
 )
 
@@ -64,6 +64,10 @@ func (s *shim) Warn(msg ...interface{}) {
 
 func (s *shim) Error(msg ...interface{}) {
 	s.logger.Error().Msg(fmt.Sprint(spaceSep(msg)...))
+}
+
+func (s *shim) Fatal(msg ...interface{}) {
+	s.logger.Fatal().Msg(fmt.Sprint(spaceSep(msg)...))
 }
 
 /*******************************************************************

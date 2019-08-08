@@ -3,6 +3,7 @@ package log
 import (
 	"fmt"
 	stdlog "log"
+	"os"
 )
 
 //go:generate counterfeiter -o shims/fake/fake_logger.go . Logger
@@ -19,6 +20,7 @@ type Logger interface {
 	Info(msg ...interface{})
 	Warn(msg ...interface{})
 	Error(msg ...interface{})
+	Fatal(msg ...interface{})
 
 	Debugln(msg ...interface{})
 	Infoln(msg ...interface{})
@@ -89,6 +91,12 @@ func (b *simple) Warn(msg ...interface{}) {
 // Error log message
 func (b *simple) Error(msg ...interface{}) {
 	stdlog.Printf("[ERROR] %s %s", fmt.Sprint(msg...), pretty(b.fields))
+}
+
+// Fatal log message (and exit)
+func (b *simple) Fatal(msg ...interface{}) {
+	stdlog.Printf("[FATAL] %s %s", fmt.Sprint(msg...), pretty(b.fields))
+	os.Exit(1)
 }
 
 // Debugln log line message
@@ -172,6 +180,9 @@ func (n *noop) Warn(msg ...interface{}) {}
 
 // Error log message no-op
 func (n *noop) Error(msg ...interface{}) {}
+
+// Fatal log message no-op
+func (n *noop) Fatal(msg ...interface{}) {}
 
 // Debugln line log message no-op
 func (n *noop) Debugln(msg ...interface{}) {}
