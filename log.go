@@ -21,6 +21,7 @@ type Logger interface {
 	Warn(msg ...interface{})
 	Error(msg ...interface{})
 	Fatal(msg ...interface{})
+	Panic(msg ...interface{})
 
 	Debugln(msg ...interface{})
 	Infoln(msg ...interface{})
@@ -99,6 +100,12 @@ func (b *simple) Error(msg ...interface{}) {
 func (b *simple) Fatal(msg ...interface{}) {
 	stdlog.Printf("[FATAL] %s %s", fmt.Sprint(msg...), pretty(b.fields))
 	os.Exit(1)
+}
+
+// Panic log message (and exit)
+func (b *simple) Panic(msg ...interface{}) {
+	stdlog.Printf("[PANIC] %s %s", fmt.Sprint(msg...), pretty(b.fields))
+	panic(fmt.Sprint(msg...))
 }
 
 // Debugln log line message
@@ -198,6 +205,9 @@ func (n *noop) Error(msg ...interface{}) {}
 
 // Fatal log message no-op
 func (n *noop) Fatal(msg ...interface{}) {}
+
+// Panic log message no-op
+func (n *noop) Panic(msg ...interface{}) {}
 
 // Debugln line log message no-op
 func (n *noop) Debugln(msg ...interface{}) {}

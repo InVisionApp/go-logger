@@ -107,6 +107,12 @@ func (t *TestLogger) Fatal(msg ...interface{}) {
 	os.Exit(1)
 }
 
+// Panic log message (and exit)
+func (t *TestLogger) Panic(msg ...interface{}) {
+	t.write("PANIC", fmt.Sprint(msg...))
+	panic(fmt.Sprint(msg...))
+}
+
 // Debugf log message with formatting
 func (t *TestLogger) Debugf(format string, args ...interface{}) {
 	t.write("DEBUG", fmt.Sprintf(format, args...))

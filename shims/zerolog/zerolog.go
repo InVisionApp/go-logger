@@ -70,6 +70,10 @@ func (s *shim) Fatal(msg ...interface{}) {
 	s.logger.Fatal().Msg(fmt.Sprint(spaceSep(msg)...))
 }
 
+func (s *shim) Panic(msg ...interface{}) {
+	s.logger.Panic().Msg(fmt.Sprint(spaceSep(msg)...))
+}
+
 /*******************************************************************
 *ln funcs
 zerolog is a json-only structured logger.
