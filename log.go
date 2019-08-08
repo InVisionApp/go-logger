@@ -3,6 +3,7 @@ package log
 import (
 	"fmt"
 	stdlog "log"
+	"os"
 )
 
 //go:generate counterfeiter -o shims/fake/fake_logger.go . Logger
@@ -19,16 +20,22 @@ type Logger interface {
 	Info(msg ...interface{})
 	Warn(msg ...interface{})
 	Error(msg ...interface{})
+	Fatal(msg ...interface{})
+	Panic(msg ...interface{})
 
 	Debugln(msg ...interface{})
 	Infoln(msg ...interface{})
 	Warnln(msg ...interface{})
 	Errorln(msg ...interface{})
+	Fatalln(msg ...interface{})
+	Panicln(msg ...interface{})
 
 	Debugf(format string, args ...interface{})
 	Infof(format string, args ...interface{})
 	Warnf(format string, args ...interface{})
 	Errorf(format string, args ...interface{})
+	Fatalf(format string, args ...interface{})
+	Panicf(format string, args ...interface{})
 
 	WithFields(Fields) Logger
 }
@@ -91,6 +98,18 @@ func (b *simple) Error(msg ...interface{}) {
 	stdlog.Printf("[ERROR] %s %s", fmt.Sprint(msg...), pretty(b.fields))
 }
 
+// Fatal log message (and exit)
+func (b *simple) Fatal(msg ...interface{}) {
+	stdlog.Printf("[FATAL] %s %s", fmt.Sprint(msg...), pretty(b.fields))
+	os.Exit(1)
+}
+
+// Panic log message (and exit)
+func (b *simple) Panic(msg ...interface{}) {
+	stdlog.Printf("[PANIC] %s %s", fmt.Sprint(msg...), pretty(b.fields))
+	panic(fmt.Sprint(msg...))
+}
+
 // Debugln log line message
 func (b *simple) Debugln(msg ...interface{}) {
 	a := fmt.Sprintln(msg...)
@@ -115,6 +134,20 @@ func (b *simple) Errorln(msg ...interface{}) {
 	stdlog.Println("[ERROR]", a[:len(a)-1], pretty(b.fields))
 }
 
+// Fatalln log line message
+func (b *simple) Fatalln(msg ...interface{}) {
+	a := fmt.Sprintln(msg...)
+	stdlog.Println("[FATAL]", a[:len(a)-1], pretty(b.fields))
+	os.Exit(1)
+}
+
+// Panicln log line message
+func (b *simple) Panicln(msg ...interface{}) {
+	a := fmt.Sprintln(msg...)
+	stdlog.Println("[PANIC]", a[:len(a)-1], pretty(b.fields))
+	panic(a[:len(a)-1])
+}
+
 // Debugf log message with formatting
 func (b *simple) Debugf(format string, args ...interface{}) {
 	stdlog.Print(fmt.Sprintf("[DEBUG] "+format, args...), " ", pretty(b.fields))
@@ -133,6 +166,18 @@ func (b *simple) Warnf(format string, args ...interface{}) {
 // Errorf log message with formatting
 func (b *simple) Errorf(format string, args ...interface{}) {
 	stdlog.Print(fmt.Sprintf("[ERROR] "+format, args...), " ", pretty(b.fields))
+}
+
+// Fatalf log message with formatting
+func (b *simple) Fatalf(format string, args ...interface{}) {
+	stdlog.Print(fmt.Sprintf("[FATAL] "+format, args...), " ", pretty(b.fields))
+	os.Exit(1)
+}
+
+// Panicf log message with formatting
+func (b *simple) Panicf(format string, args ...interface{}) {
+	stdlog.Print(fmt.Sprintf("[PANIC] "+format, args...), " ", pretty(b.fields))
+	panic(fmt.Sprintf(format, args...))
 }
 
 // helper for pretty printing of fields
@@ -173,6 +218,12 @@ func (n *noop) Warn(msg ...interface{}) {}
 // Error log message no-op
 func (n *noop) Error(msg ...interface{}) {}
 
+// Fatal log message no-op
+func (n *noop) Fatal(msg ...interface{}) {}
+
+// Panic log message no-op
+func (n *noop) Panic(msg ...interface{}) {}
+
 // Debugln line log message no-op
 func (n *noop) Debugln(msg ...interface{}) {}
 
@@ -185,6 +236,12 @@ func (n *noop) Warnln(msg ...interface{}) {}
 // Errorln line log message no-op
 func (n *noop) Errorln(msg ...interface{}) {}
 
+// Fatalln line log message no-op
+func (n *noop) Fatalln(msg ...interface{}) {}
+
+// Panicln line log message no-op
+func (n *noop) Panicln(msg ...interface{}) {}
+
 // Debugf log message with formatting no-op
 func (n *noop) Debugf(format string, args ...interface{}) {}
 
@@ -196,6 +253,12 @@ func (n *noop) Warnf(format string, args ...interface{}) {}
 
 // Errorf log message with formatting no-op
 func (n *noop) Errorf(format string, args ...interface{}) {}
+
+// Fatalf log message with formatting no-op
+func (n *noop) Fatalf(format string, args ...interface{}) {}
+
+// Panicf log message with formatting no-op
+func (n *noop) Panicf(format string, args ...interface{}) {}
 
 // WithFields no-op
 func (n *noop) WithFields(fields Fields) Logger { return n }

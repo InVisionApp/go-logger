@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/InVisionApp/go-logger"
+	log "github.com/InVisionApp/go-logger"
 	"github.com/rs/zerolog"
 )
 
@@ -66,6 +66,14 @@ func (s *shim) Error(msg ...interface{}) {
 	s.logger.Error().Msg(fmt.Sprint(spaceSep(msg)...))
 }
 
+func (s *shim) Fatal(msg ...interface{}) {
+	s.logger.Fatal().Msg(fmt.Sprint(spaceSep(msg)...))
+}
+
+func (s *shim) Panic(msg ...interface{}) {
+	s.logger.Panic().Msg(fmt.Sprint(spaceSep(msg)...))
+}
+
 /*******************************************************************
 *ln funcs
 zerolog is a json-only structured logger.
@@ -95,6 +103,16 @@ func (s *shim) Errorln(msg ...interface{}) {
 	s.logger.Error().Msg(fmt.Sprint(spaceSep(msg)...))
 }
 
+func (s *shim) Fatalln(msg ...interface{}) {
+	msg = append(msg, "\n")
+	s.logger.Fatal().Msg(fmt.Sprint(spaceSep(msg)...))
+}
+
+func (s *shim) Panicln(msg ...interface{}) {
+	msg = append(msg, "\n")
+	s.logger.Panic().Msg(fmt.Sprint(spaceSep(msg)...))
+}
+
 func (s *shim) Debugf(format string, args ...interface{}) {
 	s.logger.Debug().Msgf(format, args...)
 }
@@ -109,6 +127,14 @@ func (s *shim) Warnf(format string, args ...interface{}) {
 
 func (s *shim) Errorf(format string, args ...interface{}) {
 	s.logger.Error().Msgf(format, args...)
+}
+
+func (s *shim) Fatalf(format string, args ...interface{}) {
+	s.logger.Fatal().Msgf(format, args...)
+}
+
+func (s *shim) Panicf(format string, args ...interface{}) {
+	s.logger.Panic().Msgf(format, args...)
 }
 
 // WithFields will return a new logger derived from the original
