@@ -28,6 +28,7 @@ type Logger interface {
 	Warnln(msg ...interface{})
 	Errorln(msg ...interface{})
 	Fatalln(msg ...interface{})
+	Panicln(msg ...interface{})
 
 	Debugf(format string, args ...interface{})
 	Infof(format string, args ...interface{})
@@ -139,6 +140,13 @@ func (b *simple) Fatalln(msg ...interface{}) {
 	os.Exit(1)
 }
 
+// Panicln log line message
+func (b *simple) Panicln(msg ...interface{}) {
+	a := fmt.Sprintln(msg...)
+	stdlog.Println("[PANIC]", a[:len(a)-1], pretty(b.fields))
+	panic(a[:len(a)-1])
+}
+
 // Debugf log message with formatting
 func (b *simple) Debugf(format string, args ...interface{}) {
 	stdlog.Print(fmt.Sprintf("[DEBUG] "+format, args...), " ", pretty(b.fields))
@@ -223,6 +231,9 @@ func (n *noop) Errorln(msg ...interface{}) {}
 
 // Fatalln line log message no-op
 func (n *noop) Fatalln(msg ...interface{}) {}
+
+// Panicln line log message no-op
+func (n *noop) Panicln(msg ...interface{}) {}
 
 // Debugf log message with formatting no-op
 func (n *noop) Debugf(format string, args ...interface{}) {}

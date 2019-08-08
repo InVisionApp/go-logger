@@ -104,6 +104,14 @@ func (s *shim) Fatalln(msg ...interface{}) {
 	os.Exit(1)
 }
 
+func (s *shim) Panicln(msg ...interface{}) {
+	// Since kitlog does not support fatal, emulate it the best we can
+	msg = append([]interface{}{"[PANIC]"}, msg...)
+	msg = append(msg, "\n")
+	level.Error(s.logger).Log("msg", fmt.Sprint(spaceSep(msg)...))
+	panic(fmt.Sprint(spaceSep(msg)...))
+}
+
 func (s *shim) Debugf(format string, args ...interface{}) {
 	level.Debug(s.logger).Log("msg", fmt.Sprintf(format, args...))
 }

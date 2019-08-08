@@ -108,6 +108,11 @@ func (s *shim) Fatalln(msg ...interface{}) {
 	s.logger.Fatal().Msg(fmt.Sprint(spaceSep(msg)...))
 }
 
+func (s *shim) Panicln(msg ...interface{}) {
+	msg = append(msg, "\n")
+	s.logger.Panic().Msg(fmt.Sprint(spaceSep(msg)...))
+}
+
 func (s *shim) Debugf(format string, args ...interface{}) {
 	s.logger.Debug().Msgf(format, args...)
 }

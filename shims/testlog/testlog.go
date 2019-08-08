@@ -81,6 +81,13 @@ func (t *TestLogger) Fatalln(msg ...interface{}) {
 	os.Exit(1)
 }
 
+//Panicln log line message
+func (t *TestLogger) Panicln(msg ...interface{}) {
+	a := fmt.Sprintln(msg...)
+	t.write("PANIC", a[:len(a)-1])
+	panic(a[:len(a)-1])
+}
+
 // Debug log message
 func (t *TestLogger) Debug(msg ...interface{}) {
 	t.write("DEBUG", fmt.Sprint(msg...))
