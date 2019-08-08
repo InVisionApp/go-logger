@@ -74,6 +74,13 @@ func (t *TestLogger) Errorln(msg ...interface{}) {
 	t.write("ERROR", a[:len(a)-1])
 }
 
+//Fatalln log line message
+func (t *TestLogger) Fatalln(msg ...interface{}) {
+	a := fmt.Sprintln(msg...)
+	t.write("FATAL", a[:len(a)-1])
+	os.Exit(1)
+}
+
 // Debug log message
 func (t *TestLogger) Debug(msg ...interface{}) {
 	t.write("DEBUG", fmt.Sprint(msg...))
@@ -96,7 +103,7 @@ func (t *TestLogger) Error(msg ...interface{}) {
 
 // Fatal log message (and exit)
 func (t *TestLogger) Fatal(msg ...interface{}) {
-	t.write("Fatal", fmt.Sprint(msg...))
+	t.write("FATAL", fmt.Sprint(msg...))
 	os.Exit(1)
 }
 

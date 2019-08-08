@@ -99,6 +99,11 @@ func (s *shim) Errorln(msg ...interface{}) {
 	s.logger.Error().Msg(fmt.Sprint(spaceSep(msg)...))
 }
 
+func (s *shim) Fatalln(msg ...interface{}) {
+	msg = append(msg, "\n")
+	s.logger.Fatal().Msg(fmt.Sprint(spaceSep(msg)...))
+}
+
 func (s *shim) Debugf(format string, args ...interface{}) {
 	s.logger.Debug().Msgf(format, args...)
 }

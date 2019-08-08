@@ -89,6 +89,14 @@ func (s *shim) Errorln(msg ...interface{}) {
 	level.Error(s.logger).Log("msg", fmt.Sprint(spaceSep(msg)...))
 }
 
+func (s *shim) Fatalln(msg ...interface{}) {
+	// Since kitlog does not support fatal, emulate it the best we can
+	msg = append([]interface{}{"[FATAL]"}, msg...)
+	msg = append(msg, "\n")
+	level.Error(s.logger).Log("msg", fmt.Sprint(spaceSep(msg)...))
+	os.Exit(1)
+}
+
 func (s *shim) Debugf(format string, args ...interface{}) {
 	level.Debug(s.logger).Log("msg", fmt.Sprintf(format, args...))
 }
