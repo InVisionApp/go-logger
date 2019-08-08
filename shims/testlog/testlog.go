@@ -127,6 +127,11 @@ func (t *TestLogger) Errorf(format string, args ...interface{}) {
 	t.write("ERROR", fmt.Sprintf(format, args...))
 }
 
+// Fatalf log message with formatting
+func (t *TestLogger) Fatalf(format string, args ...interface{}) {
+	t.write("FATAL", fmt.Sprintf(format, args...))
+}
+
 // WithFields will return a new logger based on the original logger
 // with the additional supplied fields
 func (t *TestLogger) WithFields(fields log.Fields) log.Logger {

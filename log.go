@@ -32,6 +32,7 @@ type Logger interface {
 	Infof(format string, args ...interface{})
 	Warnf(format string, args ...interface{})
 	Errorf(format string, args ...interface{})
+	Fatalf(format string, args ...interface{})
 
 	WithFields(Fields) Logger
 }
@@ -151,6 +152,12 @@ func (b *simple) Errorf(format string, args ...interface{}) {
 	stdlog.Print(fmt.Sprintf("[ERROR] "+format, args...), " ", pretty(b.fields))
 }
 
+// Fatalf log message with formatting
+func (b *simple) Fatalf(format string, args ...interface{}) {
+	stdlog.Print(fmt.Sprintf("[FATAL] "+format, args...), " ", pretty(b.fields))
+	os.Exit(1)
+}
+
 // helper for pretty printing of fields
 func pretty(m map[string]interface{}) string {
 	if len(m) < 1 {
@@ -218,6 +225,9 @@ func (n *noop) Warnf(format string, args ...interface{}) {}
 
 // Errorf log message with formatting no-op
 func (n *noop) Errorf(format string, args ...interface{}) {}
+
+// Fatalf log message with formatting no-op
+func (n *noop) Fatalf(format string, args ...interface{}) {}
 
 // WithFields no-op
 func (n *noop) WithFields(fields Fields) Logger { return n }

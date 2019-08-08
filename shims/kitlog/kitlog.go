@@ -113,6 +113,13 @@ func (s *shim) Errorf(format string, args ...interface{}) {
 	level.Error(s.logger).Log("msg", fmt.Sprintf(format, args...))
 }
 
+func (s *shim) Fatalf(format string, args ...interface{}) {
+	// Since kitlog does not support fatal, emulate it the best we can
+	format = "[FATAL] " + format
+	level.Error(s.logger).Log("msg", fmt.Sprintf(format, args...))
+	os.Exit(1)
+}
+
 // WithFields will return a new logger derived from the original
 // kitlog logger, with the provided fields added to the log string,
 // as a key-value pair

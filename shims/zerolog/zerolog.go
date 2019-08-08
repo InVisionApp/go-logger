@@ -120,6 +120,10 @@ func (s *shim) Errorf(format string, args ...interface{}) {
 	s.logger.Error().Msgf(format, args...)
 }
 
+func (s *shim) Fatalf(format string, args ...interface{}) {
+	s.logger.Fatal().Msgf(format, args...)
+}
+
 // WithFields will return a new logger derived from the original
 // zerolog logger, with the provided fields added to the log string,
 // as a key-value pair
