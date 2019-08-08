@@ -145,6 +145,11 @@ func (t *TestLogger) Fatalf(format string, args ...interface{}) {
 	t.write("FATAL", fmt.Sprintf(format, args...))
 }
 
+// Panicf log message with formatting
+func (t *TestLogger) Panicf(format string, args ...interface{}) {
+	t.write("PANIC", fmt.Sprintf(format, args...))
+}
+
 // WithFields will return a new logger based on the original logger
 // with the additional supplied fields
 func (t *TestLogger) WithFields(fields log.Fields) log.Logger {

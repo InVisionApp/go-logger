@@ -133,6 +133,10 @@ func (s *shim) Fatalf(format string, args ...interface{}) {
 	s.logger.Fatal().Msgf(format, args...)
 }
 
+func (s *shim) Panicf(format string, args ...interface{}) {
+	s.logger.Panic().Msgf(format, args...)
+}
+
 // WithFields will return a new logger derived from the original
 // zerolog logger, with the provided fields added to the log string,
 // as a key-value pair

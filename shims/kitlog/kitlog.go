@@ -74,7 +74,7 @@ func (s *shim) Fatal(msg ...interface{}) {
 }
 
 func (s *shim) Panic(msg ...interface{}) {
-	// Since kitlog does not support fatal, emulate it the best we can
+	// Since kitlog does not support panic, emulate it the best we can
 	msg = append([]interface{}{"[PANIC]"}, msg...)
 	level.Error(s.logger).Log("msg", fmt.Sprint(spaceSep(msg)...))
 	panic(fmt.Sprint(spaceSep(msg)...))
@@ -105,7 +105,7 @@ func (s *shim) Fatalln(msg ...interface{}) {
 }
 
 func (s *shim) Panicln(msg ...interface{}) {
-	// Since kitlog does not support fatal, emulate it the best we can
+	// Since kitlog does not support panic, emulate it the best we can
 	msg = append([]interface{}{"[PANIC]"}, msg...)
 	msg = append(msg, "\n")
 	level.Error(s.logger).Log("msg", fmt.Sprint(spaceSep(msg)...))
@@ -133,6 +133,13 @@ func (s *shim) Fatalf(format string, args ...interface{}) {
 	format = "[FATAL] " + format
 	level.Error(s.logger).Log("msg", fmt.Sprintf(format, args...))
 	os.Exit(1)
+}
+
+func (s *shim) Panicf(format string, args ...interface{}) {
+	// Since kitlog does not support panic, emulate it the best we can
+	format = "[PANIC] " + format
+	level.Error(s.logger).Log("msg", fmt.Sprintf(format, args...))
+	panic(fmt.Sprintf(format, args...))
 }
 
 // WithFields will return a new logger derived from the original
