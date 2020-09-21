@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/InVisionApp/go-logger"
+	log "github.com/InVisionApp/go-logger"
 	"github.com/rs/zerolog"
 )
 
@@ -116,7 +116,5 @@ func (s *shim) Errorf(format string, args ...interface{}) {
 // as a key-value pair
 func (s *shim) WithFields(fields log.Fields) log.Logger {
 	lg := s.logger.With().Fields(fields).Logger()
-	s.logger = &lg
-
-	return s
+	return &shim{logger: &lg}
 }

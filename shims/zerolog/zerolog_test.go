@@ -4,15 +4,15 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io"
 	"math/rand"
+	"os"
 
-	"github.com/InVisionApp/go-logger"
+	log "github.com/InVisionApp/go-logger"
 	"github.com/rs/zerolog"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"io"
-	"os"
 )
 
 var _ = Describe("satisfies interface", func() {
@@ -108,10 +108,10 @@ var _ = Describe("zerolog logger", func() {
 			})
 			l = New(&zl)
 			logFuncs := map[string]func(...interface{}){
-				"DEBUG?": l.Debugln,
-				"INFO":   l.Infoln,
-				"WARN":   l.Warnln,
-				"ERROR?": l.Errorln,
+				"DBG": l.Debugln,
+				"INF": l.Infoln,
+				"WRN": l.Warnln,
+				"ERR": l.Errorln,
 			}
 			for level, logFunc := range logFuncs {
 				logFunc("hi", "there")
@@ -163,7 +163,7 @@ var _ = Describe("zerolog logger", func() {
 			os.Stdout = old
 
 			out := <-outC
-			Expect(out).To(MatchRegexp(`{"level":"debug","time":"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z?(-\d{2}:\d{2})?","message":"i am default"}`))
+			Expect(out).To(MatchRegexp(`{"level":"debug","time":"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z?([+-]\d{2}:\d{2})?","message":"i am default"}`))
 		})
 	})
 	Context("fields", func() {
@@ -185,6 +185,26 @@ var _ = Describe("zerolog logger", func() {
 				ContainSubstring(`"tf":true`),
 				ContainSubstring(`"pet":"cat"`),
 				ContainSubstring(`"age":1`),
+			))
+		})
+	})
+	Context("fields check if loggers do not crosstalk theirs fields", func() {
+		It("", func() {
+			_ = l.WithFields(log.Fields{
+				"foo": "bar",
+			})
+			l2 := l.WithFields(log.Fields{
+				"baz": "bar",
+			})
+
+			l2.Debug("hi there")
+			b := newOut.Bytes()
+
+			Expect(string(b)).To(SatisfyAll(
+				ContainSubstring("hi there"),
+				ContainSubstring(`"level":"debug"`),
+				Not(ContainSubstring(`"foo":"bar"`)),
+				ContainSubstring(`"baz":"bar"`),
 			))
 		})
 	})
