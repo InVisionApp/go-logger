@@ -4,15 +4,15 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io"
 	"math/rand"
+	"os"
 
-	"github.com/InVisionApp/go-logger"
+	log "github.com/InVisionApp/go-logger"
 	"github.com/rs/zerolog"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"io"
-	"os"
 )
 
 var _ = Describe("satisfies interface", func() {
@@ -108,10 +108,10 @@ var _ = Describe("zerolog logger", func() {
 			})
 			l = New(&zl)
 			logFuncs := map[string]func(...interface{}){
-				"DEBUG?": l.Debugln,
-				"INFO":   l.Infoln,
-				"WARN":   l.Warnln,
-				"ERROR?": l.Errorln,
+				"DBG": l.Debugln,
+				"INF": l.Infoln,
+				"WRN": l.Warnln,
+				"ERR": l.Errorln,
 			}
 			for level, logFunc := range logFuncs {
 				logFunc("hi", "there")
