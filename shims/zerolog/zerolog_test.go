@@ -188,4 +188,24 @@ var _ = Describe("zerolog logger", func() {
 			))
 		})
 	})
+	Context("fields check if loggers do not crosstalk theirs fields", func() {
+		It("", func() {
+			_ = l.WithFields(log.Fields{
+				"foo": "bar",
+			})
+			l2 := l.WithFields(log.Fields{
+				"baz": "bar",
+			})
+
+			l2.Debug("hi there")
+			b := newOut.Bytes()
+
+			Expect(string(b)).To(SatisfyAll(
+				ContainSubstring("hi there"),
+				ContainSubstring(`"level":"debug"`),
+				Not(ContainSubstring(`"foo":"bar"`)),
+				ContainSubstring(`"baz":"bar"`),
+			))
+		})
+	})
 })
