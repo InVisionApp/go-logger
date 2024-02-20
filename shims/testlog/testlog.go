@@ -3,8 +3,9 @@ package testlog
 import (
 	"bytes"
 	"fmt"
+	"os"
 
-	"github.com/InVisionApp/go-logger"
+	log "github.com/InVisionApp/go-logger"
 )
 
 // TestLogger is used to capture logs during the execution of a test.
@@ -73,6 +74,20 @@ func (t *TestLogger) Errorln(msg ...interface{}) {
 	t.write("ERROR", a[:len(a)-1])
 }
 
+//Fatalln log line message
+func (t *TestLogger) Fatalln(msg ...interface{}) {
+	a := fmt.Sprintln(msg...)
+	t.write("FATAL", a[:len(a)-1])
+	os.Exit(1)
+}
+
+//Panicln log line message
+func (t *TestLogger) Panicln(msg ...interface{}) {
+	a := fmt.Sprintln(msg...)
+	t.write("PANIC", a[:len(a)-1])
+	panic(a[:len(a)-1])
+}
+
 // Debug log message
 func (t *TestLogger) Debug(msg ...interface{}) {
 	t.write("DEBUG", fmt.Sprint(msg...))
@@ -93,6 +108,18 @@ func (t *TestLogger) Error(msg ...interface{}) {
 	t.write("ERROR", fmt.Sprint(msg...))
 }
 
+// Fatal log message (and exit)
+func (t *TestLogger) Fatal(msg ...interface{}) {
+	t.write("FATAL", fmt.Sprint(msg...))
+	os.Exit(1)
+}
+
+// Panic log message (and exit)
+func (t *TestLogger) Panic(msg ...interface{}) {
+	t.write("PANIC", fmt.Sprint(msg...))
+	panic(fmt.Sprint(msg...))
+}
+
 // Debugf log message with formatting
 func (t *TestLogger) Debugf(format string, args ...interface{}) {
 	t.write("DEBUG", fmt.Sprintf(format, args...))
@@ -111,6 +138,16 @@ func (t *TestLogger) Warnf(format string, args ...interface{}) {
 // Errorf log message with formatting
 func (t *TestLogger) Errorf(format string, args ...interface{}) {
 	t.write("ERROR", fmt.Sprintf(format, args...))
+}
+
+// Fatalf log message with formatting
+func (t *TestLogger) Fatalf(format string, args ...interface{}) {
+	t.write("FATAL", fmt.Sprintf(format, args...))
+}
+
+// Panicf log message with formatting
+func (t *TestLogger) Panicf(format string, args ...interface{}) {
+	t.write("PANIC", fmt.Sprintf(format, args...))
 }
 
 // WithFields will return a new logger based on the original logger

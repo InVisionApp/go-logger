@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/InVisionApp/go-logger"
+	log "github.com/InVisionApp/go-logger"
 	kitlog "github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
 )
@@ -66,6 +66,20 @@ func (s *shim) Error(msg ...interface{}) {
 	level.Error(s.logger).Log("msg", fmt.Sprint(spaceSep(msg)...))
 }
 
+func (s *shim) Fatal(msg ...interface{}) {
+	// Since kitlog does not support fatal, emulate it the best we can
+	msg = append([]interface{}{"[FATAL]"}, msg...)
+	level.Error(s.logger).Log("msg", fmt.Sprint(spaceSep(msg)...))
+	os.Exit(1)
+}
+
+func (s *shim) Panic(msg ...interface{}) {
+	// Since kitlog does not support panic, emulate it the best we can
+	msg = append([]interface{}{"[PANIC]"}, msg...)
+	level.Error(s.logger).Log("msg", fmt.Sprint(spaceSep(msg)...))
+	panic(fmt.Sprint(spaceSep(msg)...))
+}
+
 func (s *shim) Debugln(msg ...interface{}) {
 	level.Debug(s.logger).Log("msg", fmt.Sprint(spaceSep(msg)...))
 }
@@ -82,6 +96,22 @@ func (s *shim) Errorln(msg ...interface{}) {
 	level.Error(s.logger).Log("msg", fmt.Sprint(spaceSep(msg)...))
 }
 
+func (s *shim) Fatalln(msg ...interface{}) {
+	// Since kitlog does not support fatal, emulate it the best we can
+	msg = append([]interface{}{"[FATAL]"}, msg...)
+	msg = append(msg, "\n")
+	level.Error(s.logger).Log("msg", fmt.Sprint(spaceSep(msg)...))
+	os.Exit(1)
+}
+
+func (s *shim) Panicln(msg ...interface{}) {
+	// Since kitlog does not support panic, emulate it the best we can
+	msg = append([]interface{}{"[PANIC]"}, msg...)
+	msg = append(msg, "\n")
+	level.Error(s.logger).Log("msg", fmt.Sprint(spaceSep(msg)...))
+	panic(fmt.Sprint(spaceSep(msg)...))
+}
+
 func (s *shim) Debugf(format string, args ...interface{}) {
 	level.Debug(s.logger).Log("msg", fmt.Sprintf(format, args...))
 }
@@ -96,6 +126,20 @@ func (s *shim) Warnf(format string, args ...interface{}) {
 
 func (s *shim) Errorf(format string, args ...interface{}) {
 	level.Error(s.logger).Log("msg", fmt.Sprintf(format, args...))
+}
+
+func (s *shim) Fatalf(format string, args ...interface{}) {
+	// Since kitlog does not support fatal, emulate it the best we can
+	format = "[FATAL] " + format
+	level.Error(s.logger).Log("msg", fmt.Sprintf(format, args...))
+	os.Exit(1)
+}
+
+func (s *shim) Panicf(format string, args ...interface{}) {
+	// Since kitlog does not support panic, emulate it the best we can
+	format = "[PANIC] " + format
+	level.Error(s.logger).Log("msg", fmt.Sprintf(format, args...))
+	panic(fmt.Sprintf(format, args...))
 }
 
 // WithFields will return a new logger derived from the original
