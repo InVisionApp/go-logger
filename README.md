@@ -1,3 +1,6 @@
+| :warning: This project is no longer actively supported.
+| ---
+
 [![LICENSE](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 [![Build Status](https://travis-ci.com/InVisionApp/go-logger.svg?token=KosA43m1X3ikri8JEukQ&branch=master)](https://travis-ci.com/InVisionApp/go-logger)
 [![codecov](https://codecov.io/gh/InVisionApp/go-logger/branch/master/graph/badge.svg?token=hhqA1l88kx)](https://codecov.io/gh/InVisionApp/go-logger)
